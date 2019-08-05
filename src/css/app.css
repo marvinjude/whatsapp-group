@@ -1,0 +1,195 @@
+body {
+  font-family: 'Google Sans', sans-serif;
+}
+*:focus {
+  outline: none;
+}
+.mobile-height {
+  height: 100vh;
+  height: calc(var(--vh, 1vh) * 100);
+  margin: 0 auto;
+}
+.rotate-45{
+  transform: rotate(45deg)
+}
+.m-bubble:before {
+  position: absolute;
+  content: '';
+  width: 0;
+  height: 0;
+  border-left: 10px solid #DCF8C6;
+  border-right: 10px solid transparent;
+  border-top: 10px solid #DCF8C6; 
+  border-bottom: 10px solid transparent;
+  right:-12px;
+  top:0px;
+}
+.m-bubble-in:before {
+  position: absolute;
+  content: '';
+  width: 0;
+  height: 0;
+  border-left: 10px solid transparent;
+  border-right: 10px solid white;
+  border-top: 10px solid white;
+  border-bottom: 10px solid transparent; 
+  left:-12px;
+  top:0px;
+}
+.caret-primary{
+  caret-color: #005e54;
+}
+@font-face {
+  font-family: 'Google Sans';
+  src: local('Google Sans Bold'), local('GoogleSans-Bold'),
+    url('../fonts/GoogleSans-Bold.woff2') format('woff2');
+  font-weight: bold;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Google Sans';
+  src: local('Google Sans Medium Italic'), local('GoogleSans-MediumItalic'),
+    url('../fonts/GoogleSans-MediumItalic.woff2') format('woff2');
+  font-weight: 500;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'Google Sans';
+  src: local('Google Sans Italic'), local('GoogleSans-Italic'),
+    url('../fonts/GoogleSans-Italic.woff2') format('woff2');
+  font-weight: normal;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'Google Sans';
+  src: local('Google Sans Regular'), local('GoogleSans-Regular'),
+    url('../fonts/GoogleSans-Regular.woff2') format('woff2');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Google Sans';
+  src: local('Google Sans Medium'), local('GoogleSans-Medium'),
+    url('../fonts/GoogleSans-Medium.woff2') format('woff2');
+  font-weight: 500;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Google Sans';
+  src: local('Google Sans Bold Italic'), local('GoogleSans-BoldItalic'),
+    url('../fonts/GoogleSans-BoldItalic.woff2') format('woff2');
+  font-weight: bold;
+  font-style: italic;
+}
+
+.message {
+  color: #000;
+  clear: both;
+  line-height: 18px;
+  font-size: 15px;
+  padding: 8px;
+  position: relative;
+  margin: 8px 0;
+  max-width: 85%;
+  word-wrap: break-word;
+  z-index: -1;
+}
+
+.message:after {
+  position: absolute;
+  content: '';
+  width: 0;
+  height: 0;
+  border-style: solid;
+}
+
+.metadata {
+  display: inline-block;
+  float: right;
+  padding: 0 0 0 7px;
+  position: relative;
+  bottom: -4px;
+}
+
+.metadata .time {
+  color: rgba(0, 0, 0, 0.45);
+  font-size: 11px;
+  display: inline-block;
+}
+
+.metadata .tick {
+  display: inline-block;
+  margin-left: 2px;
+  position: relative;
+  top: 4px;
+  height: 16px;
+  width: 16px;
+}
+
+.metadata .tick svg {
+  position: absolute;
+  transition: 0.5s ease-in-out;
+}
+
+.metadata .tick svg:first-child {
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  -webkit-transform: perspective(800px) rotateY(180deg);
+  transform: perspective(800px) rotateY(180deg);
+}
+
+.metadata .tick svg:last-child {
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  -webkit-transform: perspective(800px) rotateY(0deg);
+  transform: perspective(800px) rotateY(0deg);
+}
+
+.metadata .tick-animation svg:first-child {
+  -webkit-transform: perspective(800px) rotateY(0);
+  transform: perspective(800px) rotateY(0);
+}
+
+.metadata .tick-animation svg:last-child {
+  -webkit-transform: perspective(800px) rotateY(-179.9deg);
+  transform: perspective(800px) rotateY(-179.9deg);
+}
+
+.message:first-child {
+  margin: 16px 0 8px;
+}
+
+.message.received {
+  background: #fff;
+  border-radius: 0px 5px 5px 5px;
+  float: left;
+}
+
+.message.received .metadata {
+  padding: 0 0 0 16px;
+}
+
+.message.received:after {
+  border-width: 0px 10px 10px 0;
+  border-color: transparent #fff transparent transparent;
+  top: 0;
+  left: -10px;
+}
+
+.message.sent {
+  background: #e1ffc7;
+  border-radius: 5px 0px 5px 5px;
+  float: right;
+}
+
+.message.sent:after {
+  border-width: 0px 0 10px 10px;
+  border-color: transparent transparent transparent #e1ffc7;
+  top: 0;
+  right: -10px;
+}
