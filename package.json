@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "global": "^4.4.0",
+    "linkifyjs": "^2.1.8",
     "lodash.debounce": "^4.0.8",
     "pubnub": "^4.24.4",
     "react": "^16.8.6",

@@ -5,6 +5,7 @@ import UUID from 'uuid/v1';
 import debounce from 'lodash.debounce';
 import PubNub from 'pubnub';
 import { ReactComponent as Spinner } from './spinner.svg';
+import Linkify from 'linkifyjs/react';
 
 import './css/output.css';
 import {
@@ -315,7 +316,10 @@ function Group({ history: { push } }) {
                       <p className="text-gray-700 px-2 ml-auto">{nickName}</p>
                     </div>
                   )}
-                  <div className="pr-20">{message}</div>
+                  <Linkify className="dont-underline pr-20" tagName="div">
+                    {message}
+                  </Linkify>
+
                   <span className="text-2xs absolute right-0 p-2 bottom-0 text-gray-700 flex justify-center items-center">
                     {prettyDate(timeString)}
                     {!received(id)

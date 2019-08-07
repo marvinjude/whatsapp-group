@@ -9,6 +9,12 @@ body {
   height: calc(var(--vh, 1vh) * 100);
   margin: 0 auto;
 }
+.dont-underline a{
+  text-decoration: none;
+  font-weight: bold;
+  cursor: pointer;
+  color: blue;
+}
 .rotate-45{
   transform: rotate(45deg)
 }
