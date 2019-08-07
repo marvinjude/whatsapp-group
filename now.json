@@ -1,4 +1,10 @@
 {
   "name": "whatsapp-group",
-  "version": 2.0
+  "version": 2.0,
+  "build": {
+    "env": {
+      "REACT_APP_PUB": "@wg-pub",
+      "REACT_APP_SUB" : "@wg-sub"
+    }
+  }
 }

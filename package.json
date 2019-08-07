@@ -4,7 +4,7 @@
   "private": true,
   "dependencies": {
     "global": "^4.4.0",
-    "now": "^15.8.7",
+    "lodash.debounce": "^4.0.8",
     "pubnub": "^4.24.4",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
