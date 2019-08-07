@@ -45,7 +45,7 @@ function generateRandomColor() {
 }
 
 /**Config */
-const DEF_CHANNEL_ID = 'GHUB-CHANNEL-TEST-11';
+const DEF_CHANNEL_ID = 'GHUB-CHANNEL-TEST-11';/**Replace with your channel ID */
 const PUB = process.env.REACT_APP_PUB; /**Replace with your Pub keys */
 const SUB = process.env.REACT_APP_SUB; /**Replace with your SUB keys */
 
