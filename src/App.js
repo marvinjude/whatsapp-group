@@ -1,12 +1,12 @@
-import React, { useLayoutEffect, useState, useCallback, memo } from 'react';
-import { Route, BrowserRouter as Router, Link, Switch } from 'react-router-dom';
+import React, {useState, memo } from 'react';
+import { Route, BrowserRouter as Router, Switch } from 'react-router-dom';
 import useLocalStorage from './lib/uselocalstorage';
 import UUID from 'uuid/v1';
 import debounce from 'lodash.debounce';
 import PubNub from 'pubnub';
 import { ReactComponent as Spinner } from './spinner.svg';
 import Linkify from 'linkifyjs/react';
-
+import config from './config.js';
 import './css/output.css';
 import {
   ArrowLeft,
@@ -24,35 +24,18 @@ import {
 } from 'react-feather';
 import genuisHub from './geniushub.jpg';
 import homeBg from './home.jpeg';
+import {
+  prettyDate,
+  setHeightProperty,
+  generateRandomColor
+} from './lib/helpers';
 
-function prettyDate(time) {
-  var date = new Date(parseInt(time));
-  return date.toLocaleTimeString([], {
-    hour: "2-digit",
-    minute: "2-digit"
-  });
-}
-
-function setHeightProperty() {
-  let vh = window.innerHeight * 0.01;
-
-  document.documentElement.style.setProperty('--vh', `${vh}px`);
-}
-function generateRandomColor() {
-  const R = Math.round((Math.random() * 1000) % 255);
-  const G = Math.round((Math.random() * 1000) % 255);
-  const B = Math.round((Math.random() * 1000) % 255);
-  return `rgb(${R}, ${G}, ${B})`;
-}
-
-/**Config */
-const DEF_CHANNEL_ID = 'GHUB-CHANNEL-TEST-11';/**Replace with your channel ID */
-const PUB = process.env.REACT_APP_PUB; /**Replace with your Pub keys */
-const SUB = process.env.REACT_APP_SUB; /**Replace with your SUB keys */
+/**use Chanell ID */
+const DEF_CHANNEL_ID = config.channelId;
 
 const pubnub = new PubNub({
-  publishKey: PUB,
-  subscribeKey: SUB
+  publishKey: config.publishKey,
+  subscribeKey: config.subscribeKey
 });
 
 function Group({ history: { push } }) {
@@ -64,7 +47,6 @@ function Group({ history: { push } }) {
   const [messages, setMessages] = useState([]);
   const latestMessages = React.createRef();
   const inpufRef = React.createRef();
-
 
   /**Handle redirect */
   if (!userData) push('/');
@@ -177,7 +159,6 @@ function Group({ history: { push } }) {
           setMessages(response.messages);
 
           setLoading(false);
-
         } else {
           console.log('Unable to Fetch Messages');
 
@@ -193,9 +174,9 @@ function Group({ history: { push } }) {
       message: function({ message }) {
         /**if the message isn't from this current user */
         if (message.user.id !== userData.id) {
-          console.log("top", messages, latestMessages);
-          setMessages([...messages , { entry: message }]);
-          console.log("bottom", messages, latestMessages);
+          console.log('top', messages, latestMessages);
+          setMessages([...messages, { entry: message }]);
+          console.log('bottom', messages, latestMessages);
         }
       }
     });
@@ -346,7 +327,7 @@ function Group({ history: { push } }) {
           </div>
         )}
       </section>
-      <form className="flex p-1" onSubmit={addMessage}>
+      <form className="flex p-1 z-10" onSubmit={addMessage}>
         <div className="p-3 overflow-hidden bg-white shadow flex rounded-full flex-1 mr-1">
           <div>
             <Smile className="text-gray-600" />
