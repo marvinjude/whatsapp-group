@@ -73,7 +73,7 @@ function Group({ history: { push } }) {
   const addMessage = e => {
     e.preventDefault();
 
-    if (inputValue) {
+    if (inputValue.trim()) {
       const randomMessageId = UUID();
 
       const message = {
@@ -341,7 +341,7 @@ function Group({ history: { push } }) {
           />
           <div
             style={{
-              transform: inputValue && `translate(50%)`
+              transform: inputValue.trim() && `translate(50%)`
             }}
             className="flex text-gray-600 ml-auto"
           >
@@ -354,7 +354,7 @@ function Group({ history: { push } }) {
           className="bg-green-500 h-12 w-12 p-3 flex rounded-full text-white justify-center items-center flex-shrink-0"
         >
           <button type="submit">
-            {(inputValue && <Send className="rotate-45" />) || <Mic />}
+            {(inputValue.trim() && <Send className="rotate-45" />) || <Mic />}
           </button>
         </div>
       </form>
