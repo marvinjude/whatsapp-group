@@ -7,7 +7,7 @@ Hence you need to sign up for a PubNub account and grap your API Keys from your 
 ## Turn on storage and playback on your PubNub dashboard
 This project relied on PubNub's **storage and playback** feature to fetch messages that have been published overtime since it uses no database. This means you have to turn the feature on right on your PubNub dashboard.
 
-![dashboard](https://raw.githubusercontent.com/marvinjude/whatsapp-group/master/dashboard.png)
+![dashboard](https://raw.githubusercontent.com/marvinjude/whatsapp-group/master/dashboard.PNG)
 
 ## Add API keys and Channel name
 After cloning this project, add your API keys(Publish, Subcribe) and channel id(You can call it **test** of whatever) in
