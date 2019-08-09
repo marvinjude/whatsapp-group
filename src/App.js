@@ -1,13 +1,10 @@
-import React, {useState, memo } from 'react';
+import React, { useState, memo } from 'react';
+import GoogleLogin from 'react-google-login';
 import { Route, BrowserRouter as Router, Switch } from 'react-router-dom';
 import useLocalStorage from './lib/uselocalstorage';
 import UUID from 'uuid/v1';
 import debounce from 'lodash.debounce';
 import PubNub from 'pubnub';
-import { ReactComponent as Spinner } from './spinner.svg';
-import Linkify from 'linkifyjs/react';
-import config from './config.js';
-import './css/output.css';
 import {
   ArrowLeft,
   GitHub,
@@ -22,8 +19,14 @@ import {
   Send,
   Code
 } from 'react-feather';
+import Linkify from 'linkifyjs/react';
+
+import './css/output.css';
+import { ReactComponent as Spinner } from './spinner.svg';
+import config from './config.js';
 import genuisHub from './geniushub.jpg';
 import homeBg from './home.jpeg';
+import googleLogo from './g-logo.png';
 import {
   prettyDate,
   setHeightProperty,
@@ -39,7 +42,7 @@ const pubnub = new PubNub({
 });
 
 function Group({ history: { push } }) {
-  const [userData] = useLocalStorage('__user__data');
+  const [userData] = useLocalStorage('user_data_v1');
   const [showScrollTo, setShowScrollTo] = useState(0);
   const [inputValue, setInputValue] = useState('');
   const [loading, setLoading] = useState(true);
@@ -85,7 +88,7 @@ function Group({ history: { push } }) {
         user: {
           id: userData.id,
           nickName: userData.nickName,
-          phone: '+2345694939343',
+          email: userData.email,
           color: userData.color
         }
       };
@@ -191,7 +194,7 @@ function Group({ history: { push } }) {
         channels: [DEF_CHANNEL_ID]
       });
     };
-  }, [userData.id, latestMessages]);
+  }, [userData, latestMessages]);
 
   React.useEffect(() => {
     setHeightProperty();
@@ -266,7 +269,7 @@ function Group({ history: { push } }) {
                   id: messageId,
                   message,
                   sending,
-                  user: { id, nickName, color },
+                  user: { id, nickName, color, email },
                   timeString
                 }
               },
@@ -293,8 +296,8 @@ function Group({ history: { push } }) {
                 >
                   {received(id) && shouldShowBubble(currentIndex) && (
                     <div style={{ color }} className="text-xs text-bold flex ">
-                      +2347069149075
-                      <p className="text-gray-700 px-2 ml-auto">{nickName}</p>
+                      {(email && email) || '*no email*'}
+                      <p className="text-gray-700 px-2 ml-auto">~{nickName}</p>
                     </div>
                   )}
                   <Linkify className="dont-underline pr-20" tagName="div">
@@ -363,21 +366,18 @@ function Group({ history: { push } }) {
 }
 
 function Home({ history: { push } }) {
-  const [userData, setUserData] = useLocalStorage('__user__data', null);
+  const [userData, setUserData] = useLocalStorage('user_data_v1', null);
   /**Redirect */
   if (userData) push('/group');
 
-  const [inputValue, setInputValue] = useState('');
-  const randomlyGeneratedUUID = UUID();
   const randomlyGeneratedColor = generateRandomColor();
 
-  const joinGroup = e => {
-    e.preventDefault();
-
+  const joinGroup = ({ profileObj: { email, familyName, googleId } }) => {
     /**Store user data in local storage */
     setUserData({
-      nickName: inputValue,
-      id: randomlyGeneratedUUID,
+      nickName: familyName,
+      email,
+      id: googleId,
       color: randomlyGeneratedColor
     });
 
@@ -396,22 +396,23 @@ function Home({ history: { push } }) {
           <Code className="inline" /> by{' '}
           <a href="http://www.twitter.com/MarvinJudeHK"> @MarvinJudeHK</a>
         </p>
-        <form className="flex flex-col" onSubmit={joinGroup}>
-          <input
-            value={inputValue}
-            onChange={e => setInputValue(e.target.value)}
-            placeholder="Enter nick name here"
-            className="rounded-full m-3 p-2 mx-0 text-center focus:border-blue-900"
+        <div className="flex flex-col mt-3">
+          <GoogleLogin
+            clientId={config.googleClientId}
+            onSuccess={res => joinGroup(res)}
+            onFailure={() => console.log('Oops! An error occured')}
+            render={renderProps => (
+              <button
+                className="font-bold bg-white shadow-lg p-3 px-4 rounded cursor-pointer flex justify-center items-center"
+                onClick={renderProps.onClick}
+                disabled={renderProps.disabled}
+              >
+                <img src={googleLogo} className="h-5 mr-2" />
+                ENTER WITH GOOGLE
+              </button>
+            )}
           />
-          <button
-            style={{
-              background: 'linear-gradient(58deg, rgb(0, 94, 84), #009688)'
-            }}
-            className="font-bold shadow-lg p-2 text-white rounded-full cursor-pointer"
-          >
-            JOIN
-          </button>
-        </form>
+        </div>
       </div>
     </div>
   );

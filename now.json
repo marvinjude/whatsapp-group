@@ -4,7 +4,8 @@
   "build": {
     "env": {
       "REACT_APP_PUB": "@wg-pub",
-      "REACT_APP_SUB" : "@wg-sub"
+      "REACT_APP_SUB" : "@wg-sub",
+      "REACT_APP_G_C_ID": "@googleclientid"
     }
   }
 }
