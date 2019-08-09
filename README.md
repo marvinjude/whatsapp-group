@@ -28,7 +28,7 @@ After cloning this project, add your API keys(Publish, Subcribe) and channel id(
 ```
 
 ## Add Google client id
-This project uses google oauth to sign users into the app. Follow these [steps](www.https://developers.google.com/identity/sign-in/web/sign-in) to get to client id and make sure to make it in `src/config.js`
+This project uses google oauth to sign users into the app. Follow these [steps](www.https://developers.google.com/identity/sign-in/web/sign-in) to get your client id and make sure to make in `src/config.js`
 
 
 ## Install Dependencies
