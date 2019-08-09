@@ -1,6 +1,6 @@
 
 ## Sign up for PubNub 
-This project relies on [PubNub](www.punub.com) for sending and receiving messages in realtime(Publish/Subcribe)
+This project relies on [PubNub](www.pubnub.com) for sending and receiving messages in realtime(Publish/Subcribe)
 hence you need to sign up for a PubNub account and grap your API Keys from your dashboard. 
 **if you already have an account, grab your API keys and move on to the next step**
 
