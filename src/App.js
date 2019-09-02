@@ -232,7 +232,8 @@ function Group({ history: { push } }) {
     <div
       className="flex antialiased flex-col mobile-height max-w-full"
       style={{
-        background: `url("https://i.ibb.co/3s1f9Jq/default-wallpaper.png") repeat`
+        background: `url("https://web.whatsapp.com/img/bg-chat-tile_8a055527b27b887521a9f084497d8879.png") repeat`,
+        backgroundColor: '#e5ddd5'
       }}
     >
       <header
