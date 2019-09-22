@@ -2437,6 +2437,11 @@ caseless@~0.12.0:
   resolved "https://registry.yarnpkg.com/caseless/-/caseless-0.12.0.tgz#1b681c21ff84033c826543090689420d187151dc"
   integrity sha1-G2gcIf+EAzyCZUMJBolCDRhxUdw=
 
+cbor-sync@^1.0.4:
+  version "1.0.4"
+  resolved "https://registry.yarnpkg.com/cbor-sync/-/cbor-sync-1.0.4.tgz#5a11a1ab75c2a14d1af1b237fd84aa8c1593662f"
+  integrity sha512-GWlXN4wiz0vdWWXBU71Dvc1q3aBo0HytqwAZnXF1wOwjqNnDWA1vZ1gDMFLlqohak31VQzmhiYfiCX5QSSfagA==
+
 ccount@^1.0.3:
   version "1.0.4"
   resolved "https://registry.yarnpkg.com/ccount/-/ccount-1.0.4.tgz#9cf2de494ca84060a2a8d2854edd6dfb0445f386"
@@ -8250,12 +8255,13 @@ public-encrypt@^4.0.0:
     randombytes "^2.0.1"
     safe-buffer "^5.1.2"
 
-pubnub@^4.24.4:
-  version "4.24.4"
-  resolved "https://registry.yarnpkg.com/pubnub/-/pubnub-4.24.4.tgz#6874b1836539765a1c1ec8c264f6b233ed28192a"
-  integrity sha512-otRny/9au/Xf0uAfPUrVwUPdFIE7nZv6+7TLcG8+wiZESgi7EgiGZ9VXAoe6istBj6hfZe0vj3+XCbkZHLHklw==
+pubnub@^4.26.0:
+  version "4.26.0"
+  resolved "https://registry.yarnpkg.com/pubnub/-/pubnub-4.26.0.tgz#f58653c640d3ff860cd475eb5c131238b6f88066"
+  integrity sha512-HAAFXN4apdbvrJx6dnE9aNaXldKoHQs+VgOhDoGM1ldNKNaBIlBKxhMxpDYhOWgI1K25p/LSL1SPhYM5nTaG6w==
   dependencies:
     agentkeepalive "^3.5.2"
+    cbor-sync "^1.0.4"
     lil-uuid "^0.1.1"
     superagent "^3.8.1"
     superagent-proxy "^1.0.3"

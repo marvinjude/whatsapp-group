@@ -5,6 +5,7 @@ import useLocalStorage from './lib/uselocalstorage';
 import UUID from 'uuid/v1';
 import debounce from 'lodash.debounce';
 import PubNub from 'pubnub';
+import backgroundImage from './default-wallpaper.png';
 import {
   ArrowLeft,
   GitHub,
@@ -35,6 +36,7 @@ import {
 
 /**use Chanell ID */
 const DEF_CHANNEL_ID = config.channelId;
+const DEF_TYPING_CHANNEL_ID = 'TYPING_CHANNEL';
 
 const pubnub = new PubNub({
   publishKey: config.publishKey,
@@ -45,17 +47,43 @@ function Group({ history: { push } }) {
   const [userData] = useLocalStorage('user_data_v1');
   const [showScrollTo, setShowScrollTo] = useState(0);
   const [inputValue, setInputValue] = useState('');
+
+  const [typer, setTyper] = useState(null);
+
   const [loading, setLoading] = useState(true);
   const containerRef = React.createRef();
   const [messages, setMessages] = useState([]);
   const latestMessages = React.createRef();
   const inpufRef = React.createRef();
 
+  const typingTimer = React.useRef();
+
   /**Handle redirect */
   if (!userData) push('/');
 
   const handleTyping = e => {
     setInputValue(e.target.value);
+  };
+
+  const sendTypingSignal = e => {
+    const inputHasValue = e.target.value.length > 0;
+    if (inputHasValue) {
+      console.log(' sending signal');
+
+      pubnub.signal(
+        {
+          channel: DEF_TYPING_CHANNEL_ID,
+          message: {
+            user: { nickName: userData.nickName }
+          }
+        },
+        function(response) {
+          if (response.error) {
+            console.log('An error occured');
+          }
+        }
+      );
+    }
   };
 
   const markMessageAsSent = id => {
@@ -115,6 +143,7 @@ function Group({ history: { push } }) {
           }
         }
       );
+
       /**Store messages in a ref */
       latestMessages.current = [...messages, { entry: message }];
 
@@ -174,6 +203,21 @@ function Group({ history: { push } }) {
   /**Listen for incoming messages */
   React.useEffect(() => {
     pubnub.addListener({
+      //Listen for typing signal
+      signal: function({ message: { user } }) {
+        console.log('Signal Received');
+
+        clearTimeout(typingTimer.current);
+
+        // Don't show typing indicator if this user is the current typer
+        if (userData.nickName !== user.nickName) {
+          setTyper(user);
+        }
+
+        typingTimer.current = setTimeout(() => {
+          setTyper(null);
+        }, 3000);
+      },
       message: function({ message }) {
         /**if the message isn't from this current user */
         if (message.user.id !== userData.id) {
@@ -184,14 +228,15 @@ function Group({ history: { push } }) {
       }
     });
 
-    /*subscribe to group channel*/
+    /*subscribe to channels*/
     pubnub.subscribe({
-      channels: [DEF_CHANNEL_ID]
+      channels: [DEF_CHANNEL_ID, DEF_TYPING_CHANNEL_ID]
     });
     return () => {
-      /*unsubscribe to group channel*/
+      clearTimeout(typingTimer.current);
+      /*unsubscribe from channels*/
       pubnub.unsubscribe({
-        channels: [DEF_CHANNEL_ID]
+        channels: [DEF_CHANNEL_ID, DEF_TYPING_CHANNEL_ID]
       });
     };
   }, [userData, latestMessages]);
@@ -207,7 +252,6 @@ function Group({ history: { push } }) {
       'scroll',
       debounce(
         e => {
-          console.log('Scrolling');
           const offset =
             e.target.scrollHeight -
             (e.target.clientHeight + e.target.scrollTop);
@@ -232,7 +276,8 @@ function Group({ history: { push } }) {
     <div
       className="flex antialiased flex-col mobile-height max-w-full"
       style={{
-        background: `url("https://web.whatsapp.com/img/bg-chat-tile_8a055527b27b887521a9f084497d8879.png") repeat`,
+        // background: `url("https://web.whatsapp.com/img/bg-chat-tile_8a055527b27b887521a9f084497d8879.png") repeat`,
+        background: `url(${backgroundImage})`,
         backgroundColor: '#e5ddd5'
       }}
     >
@@ -247,9 +292,15 @@ function Group({ history: { push } }) {
         />
         <div className="mx-2 overflow-hidden">
           <p className="text-lg font-bold">💡GeniusHUB</p>
-          <p className="text-xs truncate">
-            Marvin Jude, Larry, Awonuga Sherif, Tes
-          </p>
+
+          {/* Typing indicator */}
+          {(typer && (
+            <p className="text-xs truncate">{typer.nickName} is typing...</p>
+          )) || (
+            <p className="text-xs truncate">
+              Marvin Jude, Larry, Awonuga Sherif, Tes
+            </p>
+          )}
         </div>
         <div className="flex  ml-auto">
           <a href="https://github.com/marvinjude/whatsapp-group">
@@ -342,6 +393,7 @@ function Group({ history: { push } }) {
             className="ml-2 caret-primary flex-1"
             placeholder="Type a message"
             onChange={handleTyping}
+            onKeyUp={sendTypingSignal}
           />
           <div
             style={{
